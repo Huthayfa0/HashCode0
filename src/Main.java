@@ -1,16 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class Main {
 
     static  File inputFile;
     static Scanner inputScanner;
-
-
+    static ArrayList<HashSet<String>> intersections;
+    static HashMap<String,Integer> trafficTime;
     static int D, I, S, V, F;
     static ArrayList <Street> streets;
     static ArrayList <String[]> cars;
@@ -18,8 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        readFile();
-
+        readFile("Input/f.txt");
+        writeFile("output/outf.txt");
 
 
 
@@ -28,10 +26,29 @@ public class Main {
 
     }
 
-    public static void readFile(){
+    private static void writeFile(String file) {
+        PrintWriter outPrinter ;
+        try {
+            outPrinter=new PrintWriter(file);
+            outPrinter.println(intersections.size());
+            for (int i=0;i<intersections.size();i++){
+                outPrinter.println(i);
+                intersections.get(i).forEach(e->{
+                    outPrinter.println(e+" "+trafficTime.get(e));
+                });
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
-        inputFile = new File("Input/f.txt");
+    public static void readFile(String file){
+
+
+        inputFile = new File(file);
 
 
         try {
