@@ -5,9 +5,11 @@ import java.util.*;
 
 public class Main {
 
-    static  File inputFile;
+    static  File inputFile, outFile;
     static Scanner inputScanner;
-    static ArrayList<HashSet<String>> intersections;
+    static PrintWriter outPrinter ;
+
+    static HashSet<Street>[] intersections;
     static HashMap<String,Integer> trafficTime;
     static int D, I, S, V, F;
     static ArrayList <Street> streets;
@@ -17,7 +19,14 @@ public class Main {
     public static void main(String[] args) {
 
         readFile("Input/f.txt");
-        writeFile("output/outf.txt");
+        intersections=new HashSet[I];
+        streets.forEach(e->{
+            if (intersections[e.getEnd()]==null)
+                intersections[e.getEnd()]=new HashSet<>();
+            intersections[e.getEnd()].add(e);
+        });
+        dhade();
+        writeFile("output2/outf.txt");
 
 
 
@@ -26,15 +35,16 @@ public class Main {
 
     }
 
-    private static void writeFile(String file) {
-        PrintWriter outPrinter ;
+    private static void writeFile(String source) {
+        outFile = new File(source);
         try {
-            outPrinter=new PrintWriter(file);
-            outPrinter.println(intersections.size());
-            for (int i=0;i<intersections.size();i++){
+            outPrinter=new PrintWriter(outFile);
+            outPrinter.println(intersections.length);
+            for (int i=0;i<intersections.length;i++){
                 outPrinter.println(i);
-                intersections.get(i).forEach(e->{
-                    outPrinter.println(e+" "+trafficTime.get(e));
+                outPrinter.println(intersections[i].size());
+                intersections[i].forEach(e->{
+                    outPrinter.println(e.getName()+" "+trafficTime.get(e.getName()));
                 });
             }
 
@@ -42,7 +52,12 @@ public class Main {
             e.printStackTrace();
         }
 
+        outPrinter.close();
+
     }
+
+
+
 
 
     public static void readFile(String file){
@@ -92,6 +107,22 @@ public class Main {
 
         inputScanner.close();
 
+    }
+    static void dhade(){
+        Random a=new Random();
+        trafficTime=new HashMap<>(streets.size());
+        for (int i=0;i<intersections.length;i++)
+        {
+            intersections[i].forEach(s->{
+                trafficTime.put(s.getName(),1+( a.nextInt()%2));
+            });
+        }
+    }
+    public static void huth(int id){
+        if(id>6){
+            System.out.println("go first");
+            int xx=22;
+        }
     }
 
 
